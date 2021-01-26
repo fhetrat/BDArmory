@@ -23,6 +23,7 @@ namespace BDArmory.CounterMeasure
         public Vector3 velocity;
 
         public float thermal; //heat value
+        public float atmThermal; //atmosphere heat value
         float minThermal;
         float startThermal;
 
@@ -34,12 +35,13 @@ namespace BDArmory.CounterMeasure
             //thermal = BDArmorySetup.FLARE_THERMAL*UnityEngine.Random.Range(0.45f, 1.25f);
             // NEW: generate flare within spectrum of emitting vessel's heat signature
             thermal = BDATargetManager.GetVesselHeatSignature(sourceVessel) * UnityEngine.Random.Range(0.65f, 1.75f);
+            atmThermal = sourceVessel.atmosphericTemperature;
         }
 
         void OnEnable()
         {
             startThermal = thermal;
-            minThermal = startThermal * 0.3f;
+            minThermal = atmThermal;
 
             if (gaplessEmitters == null || pEmitters == null)
             {
