@@ -286,9 +286,9 @@ namespace BDArmory.UI
                 if (!part.Current) continue;
 
                 float thisScore = (float)(part.Current.thermalInternalFluxPrevious + part.Current.skinTemperature);
-                heatScore += (float)pow((thisScore - vesselAtmThermal), 2);
+                heatScore += (float)Mathf.Pow((thisScore - vesselAtmThermal * 2), 2);
             }
-            heatScore = (float)pow(heatScore, 0.5f);
+            heatScore = (float)Mathf.Pow(heatScore, 0.5f) * 0.9f;   ///0.9f value can be changed. It is used to reduce difference between old and new calculation
             return heatScore;
         }
 
