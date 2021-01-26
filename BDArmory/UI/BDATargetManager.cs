@@ -271,13 +271,14 @@ namespace BDArmory.UI
 
         /// <summary>
         /// The the heat signature of a vessel (for Heat/IR targeting).
-        /// Returns the heat of the hottest part of the vessel
+        /// Returns the square root of sum (parts_temp - atm_temperature)^2
         /// </summary>
         /// <param name="v">Vessel</param>
         /// <returns>Heat signature value</returns>
         public static float GetVesselHeatSignature(Vessel v)
         {
             float heatScore = 0f;
+            float vesselAtmThermal = (float)v.atmosphericTemperature;
 
             List<Part>.Enumerator part = v.Parts.GetEnumerator();
             while (part.MoveNext())
@@ -285,9 +286,9 @@ namespace BDArmory.UI
                 if (!part.Current) continue;
 
                 float thisScore = (float)(part.Current.thermalInternalFluxPrevious + part.Current.skinTemperature);
-                heatScore = Mathf.Max(heatScore, thisScore);
+                heatScore += (float)pow((thisScore - vesselAtmThermal), 2);
             }
-
+            heatScore = (float)pow(heatScore, 0.5f);
             return heatScore;
         }
 
